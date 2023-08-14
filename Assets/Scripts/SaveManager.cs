@@ -4,13 +4,15 @@ using UnityEngine;
 using System.IO;
 using Microsoft.SqlServer.Server;
 using UnityEditor.Experimental.RestService;
+using UnityEngine.UI;
 
 namespace GameSystem
 {
     public class SaveManager : MonoBehaviour
     {
-        public string PlayerName;
-        public int PlayerHighScore;
+        public string playerName;//current player name
+        public string playerHighScoreName; //name of the player with the highest score
+        public int playerHighScore; //highest recorded score
 
         public static SaveManager instance;
         private void Awake()
@@ -27,10 +29,9 @@ namespace GameSystem
        
         }
 
-        public void ReceivePlayerName(string Name)
+        public void NameChange(string playerNameInputField)
         { 
-            PlayerName = Name;
-            
+         playerName = playerNameInputField;
         }
 
         //save player infos
@@ -38,11 +39,19 @@ namespace GameSystem
         {
             SaveData Playerdata = new SaveData();
 
-            if (score > Playerdata.HighScore)
+            //saves the player's name if the score is higher than previously registered
+            if (score > playerHighScore)
             {
-                Playerdata.HighScoreName = PlayerName;
+                Playerdata.HighScoreName = playerName;
                 Playerdata.HighScore = score;
             }
+            //if not, it continues with the highest recorded score
+            else
+            { 
+                Playerdata.HighScoreName = playerHighScoreName;
+                Playerdata.HighScore = playerHighScore;
+            }
+           
             string json = JsonUtility.ToJson(Playerdata);
 
             File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
@@ -57,8 +66,8 @@ namespace GameSystem
                 string json = File.ReadAllText(path);
                 SaveData Playerdata = JsonUtility.FromJson<SaveData>(json);
 
-                PlayerName = Playerdata.HighScoreName;
-                PlayerHighScore = Playerdata.HighScore;
+                playerHighScoreName = Playerdata.HighScoreName;
+                playerHighScore = Playerdata.HighScore;
 
             }
         }

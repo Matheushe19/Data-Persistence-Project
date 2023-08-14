@@ -63,18 +63,21 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                ChangeName();
             }
         }
     }
 
+    //change the player name
     void ChangeName()
     {
-        BestScoreText.text = $"Best Score: {SaveManager.instance.PlayerName} : {SaveManager.instance.PlayerHighScore}";
+        //Show the Player high score and the name
+        BestScoreText.text = $"Best Score: {SaveManager.instance.playerHighScoreName} : {SaveManager.instance.playerHighScore}";
     }
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $" Player Name : {SaveManager.instance.playerName} Score : {m_Points}";
     }
 
     public void GameOver()

@@ -15,6 +15,14 @@ namespace GameSystem
             SceneManager.LoadScene(1);
         }
 
+        public void OnReturn()
+        {
+
+            //Load Menu Scene
+            SceneManager.LoadScene(0);
+            SaveManager.instance.LoadHighScore();
+        }
+
         public void OnAppExit()
         {
 #if UNITY_EDITOR
